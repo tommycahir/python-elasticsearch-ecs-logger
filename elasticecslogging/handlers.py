@@ -11,7 +11,8 @@ import traceback
 import uuid
 from threading import Timer, Lock
 
-from elasticsearch import Elasticsearch, RequestsHttpConnection
+from elasticsearch import Elasticsearch
+from elastic_transport import RequestsHttpNode
 from elasticsearch import helpers as eshelpers
 from enum import Enum
 
@@ -261,7 +262,7 @@ class ElasticECSHandler(logging.Handler):
                 self._client = Elasticsearch(hosts=self.hosts,
                                              use_ssl=self.use_ssl,
                                              verify_certs=self.verify_certs,
-                                             connection_class=RequestsHttpConnection,
+                                             connection_class=RequestsHttpNode,
                                              serializer=self.serializer)
             return self._client
 
@@ -271,7 +272,7 @@ class ElasticECSHandler(logging.Handler):
                                      http_auth=self.auth_details,
                                      use_ssl=self.use_ssl,
                                      verify_certs=self.verify_certs,
-                                     connection_class=RequestsHttpConnection,
+                                     connection_class=RequestsHttpNode,
                                      serializer=self.serializer)
             return self._client
 
@@ -282,7 +283,7 @@ class ElasticECSHandler(logging.Handler):
             return Elasticsearch(hosts=self.hosts,
                                  use_ssl=self.use_ssl,
                                  verify_certs=self.verify_certs,
-                                 connection_class=RequestsHttpConnection,
+                                 connection_class=RequestsHttpNode,
                                  http_auth=HTTPKerberosAuth(mutual_authentication=DISABLED),
                                  serializer=self.serializer)
 
@@ -296,7 +297,7 @@ class ElasticECSHandler(logging.Handler):
                     http_auth=awsauth,
                     use_ssl=self.use_ssl,
                     verify_certs=True,
-                    connection_class=RequestsHttpConnection,
+                    connection_class=RequestsHttpNode,
                     serializer=self.serializer
                 )
             return self._client
